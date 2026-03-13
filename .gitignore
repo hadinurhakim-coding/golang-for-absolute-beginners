@@ -1,0 +1,45 @@
+# Binaries / hasil build
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# Output dari go build (nama binary mengikuti nama modul atau main)
+/main
+/golang-for-absolute-beginers
+
+# Test & coverage
+*.test
+*.out
+coverage.html
+coverage.txt
+
+# Dependency (vendor opsional; go.sum tetap di-commit)
+/vendor/
+
+# IDE & editor
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Environment (jika nanti pakai .env)
+.env
+.env.local
+.env.*.local
+
+# Log & temporary
+*.log
+/tmp/
+/temp/
+
+# Debug
+__debug_bin
+*.prof
