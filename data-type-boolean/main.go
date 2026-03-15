@@ -1,130 +1,58 @@
-// =============================================================================
-// TIPE DATA BOOLEAN DI GO
-// =============================================================================
-// Di Go hanya ada satu tipe untuk nilai benar/salah: bool.
-// Nilai yang mungkin: true atau false (bukan 1/0 seperti di C).
-// Dipakai untuk kondisi (if, for), operator logika (&&, ||, !), dan perbandingan.
-// =============================================================================
-
 package main
 
 import "fmt"
 
 func main() {
-	fmt.Println("========== 1. Dasar: true & false ==========")
-	dasar()
+	isBarangTersedia := true
+	isBarangKosong := false
 
-	fmt.Println("\n========== 2. Zero value bool ==========")
-	zeroValue()
+	fmt.Println("Apakah Barang Tersedia? :", isBarangTersedia)
+	fmt.Println("Apakah Barang Kosong? :", isBarangKosong)
 
-	fmt.Println("\n========== 3. Operator logika: &&, ||, ! ==========")
-	operatorLogika()
+	fmt.Println()
 
-	fmt.Println("\n========== 4. Hasil perbandingan (==, !=, <, >, <=, >=) ==========")
-	perbandingan()
+	isInStock := true
+	isAddressValid := false
+	isPickupSelected := true
+	isItemDamaged := false
 
-	fmt.Println("\n========== 5. Short-circuit (evaluasi singkat) ==========")
-	shortCircuit()
+	// Kita gunakan operator AND dan OR untuk mengecek apakah barang layak dikirim atau tidak.
+	// lebih detail nya ada di file operasi-boolean/main.go
+	isEligible := isInStock && (isAddressValid || isPickupSelected) && !isItemDamaged
 
-	fmt.Println("\n========== 6. Bool dalam kondisi if ==========")
-	kondisiIf()
-}
+	fmt.Println("---SISTEM VERIFIKASI GUDANG---")
+	fmt.Printf("Status Stok          : %t\n", isInStock)
+	fmt.Printf("Status Alamat        : %t\n", isAddressValid)
+	fmt.Printf("Pickup di gudang     : %t\n", isPickupSelected)
+	fmt.Printf("Apakah Barang Rusak? : %t\n", isItemDamaged)
+	fmt.Println("--------------------------------")
+	fmt.Printf("Apakah Barang Layak Dikirim? : %t\n", isEligible)
 
-// -----------------------------------------------------------------------------
-// 1. Deklarasi dan nilai literal: true, false
-// -----------------------------------------------------------------------------
-func dasar() {
-	var ya bool = true
-	var tidak bool = false
+	fmt.Println()
 
-	fmt.Printf("ya   = %t (tipe: bool)\n", ya)
-	fmt.Printf("tidak= %t (tipe: bool)\n", tidak)
-
-	// Inferensi tipe
-	benar := true
-	salah := false
-	fmt.Printf("benar= %t, salah= %t\n", benar, salah)
-}
-
-// -----------------------------------------------------------------------------
-// 2. Zero value: variabel bool yang belum diisi = false
-// -----------------------------------------------------------------------------
-func zeroValue() {
-	var b bool
-	fmt.Printf("var b bool → zero value = %t\n", b)
-}
-
-// -----------------------------------------------------------------------------
-// 3. Operator logika
-//   && = AND (dan)  : true hanya jika keduanya true
-//   || = OR (atau)  : true jika salah satu true
-//   !  = NOT (negasi): membalik true↔false
-// -----------------------------------------------------------------------------
-func operatorLogika() {
-	fmt.Println("AND (&&): true && true =", true && true)   // true
-	fmt.Println("AND (&&): true && false=", true && false)   // false
-	fmt.Println("AND (&&): false && false=", false && false) // false
-
-	fmt.Println("OR (||) : true || false =", true || false)  // true
-	fmt.Println("OR (||) : false || false=", false || false) // false
-
-	fmt.Println("NOT (!) : !true =", !true)   // false
-	fmt.Println("NOT (!) : !false=", !false)  // true
-}
-
-// -----------------------------------------------------------------------------
-// 4. Hasil perbandingan selalu bool
-//   ==  sama dengan
-//   !=  tidak sama dengan
-//   <   kurang dari
-//   >   lebih dari
-//   <=  kurang dari atau sama dengan
-//   >=  lebih dari atau sama dengan
-// -----------------------------------------------------------------------------
-func perbandingan() {
-	a, b := 10, 20
-
-	fmt.Printf("a=%d, b=%d\n", a, b)
-	fmt.Printf("a == b  → %t\n", a == b)  // false
-	fmt.Printf("a != b  → %t\n", a != b)  // true
-	fmt.Printf("a < b   → %t\n", a < b)   // true
-	fmt.Printf("a > b   → %t\n", a > b)   // false
-	fmt.Printf("a <= 10 → %t\n", a <= 10) // true
-	fmt.Printf("a >= 10 → %t\n", a >= 10) // true
-
-	// String juga bisa dibandingkan (urutan leksikografis)
-	fmt.Printf("\n\"abc\" == \"abc\" → %t\n", "abc" == "abc")
-	fmt.Printf("\"abc\" < \"abd\"  → %t\n", "abc" < "abd")
-}
-
-// -----------------------------------------------------------------------------
-// 5. Short-circuit: && berhenti di false pertama; || berhenti di true pertama
-// -----------------------------------------------------------------------------
-func shortCircuit() {
-	// Fungsi yang mengembalikan bool dan "efek samping" (di sini kita cek urutan pemanggilan)
-	call := func(name string, result bool) bool {
-		fmt.Printf("  [dipanggil: %s]\n", name)
-		return result
+	// Kita gunakan IF STATEMENT untuk mengecek apakah barang layak dikirim atau tidak.
+	// lebih detail nya ada di file if-statement/main.go
+	if isEligible {
+		fmt.Println("Silahkan Cetak Label Pengiriman.")
+	} else {
+		fmt.Println("Barang tidak laya di kirim!")
 	}
 
-	fmt.Println("false && call(\"B\", true) → B tidak perlu dievaluasi:")
-	_ = false && call("B", true)
-
-	fmt.Println("true || call(\"Y\", false) → Y tidak perlu dievaluasi:")
-	_ = true || call("Y", false)
 }
 
-// -----------------------------------------------------------------------------
-// 6. Bool dipakai langsung di if (tidak pakai perbandingan dengan 0/1)
-// -----------------------------------------------------------------------------
-func kondisiIf() {
-	login := true
-	if login {
-		fmt.Println("  if login { ... } → kondisi true, blok ini dijalankan.")
-	}
-
-	admin := false
-	if !admin {
-		fmt.Println("  if !admin { ... } → admin false, !admin true, blok dijalankan.")
-	}
-}
+//
+// CATATAN TIPE DATA BOOLEAN & FORMAT PRINT
+//
+// Tipe data boolean:
+//   - Hanya dua nilai: true dan false. Dipakai untuk kondisi, flag, validasi.
+//   - Nama variabel sering diawali is/has/can (isBarangTersedia, isEligible) agar mudah dibaca.
+//
+// Format cetak (Printf):
+//   - %t : untuk boolean. Menampilkan "true" atau "false". Pakai Printf, bukan Println, agar %t diolah.
+//   - Println("teks", x) : mencetak teks lalu nilai x (tanpa format verb). Cocok untuk output sederhana.
+//
+// Operator boolean (lihat operasi-boolean/main.go untuk detail):
+//   - && : AND (kedua kondisi harus true).
+//   - || : OR (salah satu true cukup).
+//   - !  : NOT (membalik nilai).
+//
