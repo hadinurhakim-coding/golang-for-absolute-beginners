@@ -27,6 +27,7 @@ func main() {
 	fmt.Println("Kode Alias: ", ambilKode)
 
 	// Perbandingan string dengan ==
+	// lebih lanjut tentang perbandingan string ada di file operasi-string/main.go
 	if kategori == "001" {
 		fmt.Println("Ini adalah barang pertama!")
 	} else {
