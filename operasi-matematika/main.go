@@ -1,115 +1,84 @@
-// =============================================================================
-// OPERASI MATEMATIKA DI GO
-// =============================================================================
-// Operator: + (tambah), - (kurang), * (kali), / (bagi), % (modulo/sisa bagi)
-// Integer division: 7/2 = 3 (hasil bagi bulat). Untuk float: 7.0/2.0 atau float64(7)/2
-// =============================================================================
-
 package main
 
 import "fmt"
 
 func main() {
-	fmt.Println("========== 1. Dasar: + - * / % ==========")
-	dasar()
+	// 1. Operasi dasar: +, -, *, / — perhitungan stok dan nilai
+	stokAwal := 100
+	barangMasuk := 25
+	barangKeluar := 30
+	stokAkhir := stokAwal + barangMasuk - barangKeluar
 
-	fmt.Println("\n========== 2. Pembagian integer vs float ==========")
-	pembagian()
+	hargaSatuan := 15000.0
+	jumlahBeli := 5
+	totalBayar := hargaSatuan * float64(jumlahBeli)
 
-	fmt.Println("\n========== 3. Modulo (sisa bagi) ==========")
-	modulo()
+	fmt.Println("--- OPERASI DASAR (+, -, *, /) ---")
+	fmt.Printf("Stok Awal    : %d\n", stokAwal)
+	fmt.Printf("Barang Masuk : +%d\n", barangMasuk)
+	fmt.Printf("Barang Keluar: -%d\n", barangKeluar)
+	fmt.Printf("Stok Akhir   : %d\n", stokAkhir)
+	fmt.Println("--------------------------------")
+	fmt.Printf("Harga Satuan : Rp.%.0f x %d = Rp.%.0f\n", hargaSatuan, jumlahBeli, totalBayar)
+	fmt.Println()
 
-	fmt.Println("\n========== 4. Compound assignment: +=, -=, *=, /=, %= ==========")
-	compoundAssignment()
+	// 2. Pembagian integer vs float — bagi lusin dan rata-rata
+	totalItem := 47
+	isiPerKarton := 12
+	jumlahKarton := totalItem / isiPerKarton
+	sisaItem := totalItem % isiPerKarton
 
-	fmt.Println("\n========== 5. Increment & decrement (++, --) ==========")
-	incrementDecrement()
+	totalNilai := 450000.0
+	jumlahTransaksi := 3
+	rataRataNilai := totalNilai / float64(jumlahTransaksi)
 
-	fmt.Println("\n========== 6. Urutan operasi (precedence) ==========")
-	precedence()
+	fmt.Println("--- PEMBAGIAN & MODULO ---")
+	fmt.Printf("Total Item     : %d\n", totalItem)
+	fmt.Printf("Isi per Karton : %d\n", isiPerKarton)
+	fmt.Printf("Jumlah Karton   : %d (pembagian integer)\n", jumlahKarton)
+	fmt.Printf("Sisa Item      : %d (modulo %%)\n", sisaItem)
+	fmt.Println("--------------------------------")
+	fmt.Printf("Total Nilai / %d transaksi = Rp.%.0f (rata-rata)\n", jumlahTransaksi, rataRataNilai)
+	fmt.Println()
 
-	fmt.Println("\n========== 7. Contoh kasus: total belanja & diskon ==========")
-	kasusBelanja()
+	// 3. Augmented assignment (+=, -=, *=, /=) — update stok dan diskon
+	stok := 50
+	stok += 20
+	stok -= 5
 
-	fmt.Println("\n========== 8. Contoh kasus: konversi suhu ==========")
-	kasusSuhu()
+	harga := 100000.0
+	diskonPersen := 10.0
+	harga *= (1 - diskonPersen/100)
+
+	fmt.Println("--- AUGMENTED ASSIGNMENT (+=, -=, *=) ---")
+	fmt.Printf("Stok awal 50, +20 lalu -5 = %d\n", stok)
+	fmt.Printf("Harga Rp.100.000 diskon 10%% = Rp.%.0f\n", harga)
+	fmt.Println()
+
+	// 4. Ekspresi gabungan — perhitungan satu baris
+	quantity := 10
+	unitPrice := 25000.0
+	pajak := 0.11
+	total := float64(quantity) * unitPrice * (1 + pajak)
+
+	fmt.Println("--- EKSPRESI GABUNGAN ---")
+	fmt.Printf("Qty %d x Rp.%.0f x (1 + Pajak 11%%) = Rp.%.0f\n", quantity, unitPrice, total)
 }
 
-func dasar() {
-	a, b := 10, 3
-	fmt.Printf("a=%d, b=%d\n", a, b)
-	fmt.Printf("a + b = %d\n", a+b)
-	fmt.Printf("a - b = %d\n", a-b)
-	fmt.Printf("a * b = %d\n", a*b)
-	fmt.Printf("a / b = %d (pembagian bulat)\n", a/b)
-	fmt.Printf("a %% b = %d (sisa bagi)\n", a%b)
-}
-
-func pembagian() {
-	fmt.Println("7 / 2 (int)     =", 7/2)
-	fmt.Println("7.0 / 2 (float)  =", 7.0/2)
-	fmt.Println("float64(7) / 2  =", float64(7)/2)
-}
-
-func modulo() {
-	fmt.Println("10 % 3 =", 10%3)
-	fmt.Println("15 % 5 =", 15%5)
-	fmt.Println("7 % 2  =", 7%2, "(cek ganjil: sisa 1 = ganjil)")
-}
-
-func compoundAssignment() {
-	n := 10
-	n += 5
-	fmt.Printf("n = 10, n += 5 → n = %d\n", n)
-	n -= 3
-	fmt.Printf("n -= 3 → n = %d\n", n)
-	n *= 2
-	fmt.Printf("n *= 2 → n = %d\n", n)
-	n /= 4
-	fmt.Printf("n /= 4 → n = %d\n", n)
-	n %= 3
-	fmt.Printf("n %%= 3 → n = %d\n", n)
-}
-
-func incrementDecrement() {
-	x := 5
-	x++
-	fmt.Printf("x = 5, x++ → x = %d\n", x)
-	x--
-	fmt.Printf("x-- → x = %d\n", x)
-	// Di Go: ++ dan -- hanya postfix (x++), tidak ada prefix (++x). Tidak bisa dipakai dalam ekspresi: z := x++ // error
-}
-
-func precedence() {
-	// * dan / lebih dulu dari + dan -
-	fmt.Println("2 + 3*4   =", 2+3*4)
-	fmt.Println("(2 + 3)*4 =", (2+3)*4)
-}
-
-func kasusBelanja() {
-	hargaItem1 := 25000
-	hargaItem2 := 15000
-	jumlahItem1 := 2
-	jumlahItem2 := 3
-
-	subtotal := hargaItem1*jumlahItem1 + hargaItem2*jumlahItem2
-	diskonPersen := 10
-	diskon := subtotal * diskonPersen / 100
-	total := subtotal - diskon
-
-	fmt.Printf("Item1: %d x %d = %d\n", hargaItem1, jumlahItem1, hargaItem1*jumlahItem1)
-	fmt.Printf("Item2: %d x %d = %d\n", hargaItem2, jumlahItem2, hargaItem2*jumlahItem2)
-	fmt.Printf("Subtotal: %d\n", subtotal)
-	fmt.Printf("Diskon %d%%: %d\n", diskonPersen, diskon)
-	fmt.Printf("Total bayar: %d\n", total)
-}
-
-func kasusSuhu() {
-	celsius := 25.0
-	fahrenheit := celsius*9/5 + 32
-	fmt.Printf("%.1f°C = %.1f°F\n", celsius, fahrenheit)
-
-	km := 100.0
-	mil := km / 1.609
-	fmt.Printf("%.1f km = %.2f mil\n", km, mil)
-}
+//
+// CATATAN OPERASI MATEMATIKA DI GO
+//
+// Operator aritmetika:
+//   - +  : penjumlahan. - : pengurangan. * : perkalian. / : pembagian. %% : sisa bagi (modulo, hanya integer).
+//
+// Pembagian:
+//   - int / int   : hasil integer (truncate). Contoh: 47/12 = 3.
+//   - float / float (atau salah satu float): hasil float. Cast: float64(angka) agar pembagian desimal.
+//
+// Augmented assignment:
+//   - +=, -=, *=, /=, %%= : ubah variabel in-place. Contoh: stok += 20 sama dengan stok = stok + 20.
+//
+// Format cetak: %%d (integer), %%.0f / %%.2f (float). %% untuk literal %%. \\n newline.
+//
+// Lihat juga: data-type-number, variable, constant, operasi-perbandingan, operasi-boolean.
+//
