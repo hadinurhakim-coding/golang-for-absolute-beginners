@@ -1,86 +1,61 @@
-// =============================================================================
-// OPERASI PERBANDINGAN DI GO
-// =============================================================================
-// Operator: == (sama), != (tidak sama), < (kurang dari), > (lebih dari), <=, >=
-// Hasil selalu bool (true/false). Dipakai di if, for, dan ekspresi.
-// =============================================================================
-
 package main
 
 import "fmt"
 
 func main() {
-	fmt.Println("========== 1. Dasar: angka ==========")
-	dasarAngka()
+	stokSaatIni := 1001
+	kapasitasMax := 10000
+	suhuRuangan := 25.5
+	suhuIdeal := 20.0
+	kodeAkses := "GUDANG-01"
+	inputAkses := "GUDANG-B1"
 
-	fmt.Println("\n========== 2. String: ==, !=, <, > ==========")
-	perbandinganString()
+	isAksesValid := kodeAkses == inputAkses
+	isStokPenuh := stokSaatIni == kapasitasMax
+	isBukanSuhuIdeal := suhuRuangan >= suhuIdeal
 
-	fmt.Println("\n========== 3. Float: hati-hati presisi ==========")
-	perbandinganFloat()
+	overheat := suhuRuangan > 30.0
+	stokKritis := stokSaatIni < 10
+	keamanan := isAksesValid && isStokPenuh && !overheat && !stokKritis
 
-	fmt.Println("\n========== 4. Contoh kasus: nilai lulus ==========")
-	kasusNilaiLulus()
+	bisaTambahStok := stokSaatIni <= 80
+	kapasitasAman := stokSaatIni >= 0
 
-	fmt.Println("\n========== 5. Contoh kasus: range usia ==========")
-	kasusRangeUsia()
+	fmt.Println("=== SISTEM MONITORING GUDANG ===")
+	fmt.Printf("Kode Akses Valid: %t\n", isAksesValid)
+	fmt.Printf("Status Stok : %t\n", isStokPenuh)
+	fmt.Printf("Status Suhu : %t\n", isBukanSuhuIdeal)
+	fmt.Printf("Status Overheat : %t\n", overheat)
+	fmt.Printf("Status Stok Kritis : %t\n", stokKritis)
+	fmt.Printf("Status Keamanan : %t\n", keamanan)
+	fmt.Printf("Bisa Tambah Stok : %t\n", bisaTambahStok)
+	fmt.Printf("Kapasitas Aman : %t\n", kapasitasAman)
+	fmt.Println("===================================")
 
-	fmt.Println("\n========== 6. Contoh kasus: validasi input ==========")
-	kasusValidasi()
+	if keamanan {
+		fmt.Println("Gudang Aman, tetap bekerja.")
+	} else {
+		fmt.Println("Gudang tidak aman, perlu perbaikan.")
+	}
+
+	if stokSaatIni < kapasitasMax {
+		fmt.Printf("Masih bisa ditambahkan %d barang lagi.\n", kapasitasMax-stokSaatIni)
+	} else {
+		fmt.Printf("Kapasitas max %d, stok saat ini %d sudah penuh, perlu dikeluarkan!\n", kapasitasMax, stokSaatIni)
+	}
+
 }
 
-func dasarAngka() {
-	a, b := 10, 20
-	fmt.Printf("a=%d, b=%d\n", a, b)
-	fmt.Printf("a == b → %t\n", a == b)
-	fmt.Printf("a != b → %t\n", a != b)
-	fmt.Printf("a < b  → %t\n", a < b)
-	fmt.Printf("a > b  → %t\n", a > b)
-	fmt.Printf("a <= 10 → %t\n", a <= 10)
-	fmt.Printf("a >= 10 → %t\n", a >= 10)
-}
-
-func perbandinganString() {
-	s1, s2 := "apple", "banana"
-	fmt.Printf("%q == %q → %t\n", s1, s2, s1 == s2)
-	fmt.Printf("%q != %q → %t\n", s1, s2, s1 != s2)
-	fmt.Printf("%q < %q → %t (urutan leksikografis/alfabet)\n", s1, s2, s1 < s2)
-	fmt.Printf("%q > %q → %t\n", s1, s2, s1 > s2)
-}
-
-func perbandinganFloat() {
-	f := 0.1 + 0.2
-	fmt.Printf("0.1 + 0.2 = %v\n", f)
-	fmt.Printf("f == 0.3 → %t (bisa false karena presisi)\n", f == 0.3)
-	// Untuk perbandingan float, sering pakai selang (epsilon) atau math.Abs(a-b) < epsilon
-}
-
-func kasusNilaiLulus() {
-	nilai := 75
-	batasLulus := 60
-	lulus := nilai >= batasLulus
-	fmt.Printf("Nilai: %d, Batas lulus: %d\n", nilai, batasLulus)
-	fmt.Printf("Lulus? %t\n", lulus)
-
-	nilai2 := 55
-	fmt.Printf("Nilai %d lulus? %t\n", nilai2, nilai2 >= batasLulus)
-}
-
-func kasusRangeUsia() {
-	usia := 25
-	minDewasa, maxRemaja := 18, 17
-	dewasa := usia >= minDewasa
-	remaja := usia >= 0 && usia <= maxRemaja
-	fmt.Printf("Usia %d: dewasa? %t, remaja? %t\n", usia, dewasa, remaja)
-}
-
-func kasusValidasi() {
-	username := "admin"
-	panjangMin := 5
-	validPanjang := len(username) >= panjangMin
-	fmt.Printf("Username %q, panjang minimal %d: valid? %t\n", username, panjangMin, validPanjang)
-
-	angka := 100
-	dalamRange := angka >= 1 && angka <= 100
-	fmt.Printf("Angka %d dalam range [1,100]? %t\n", angka, dalamRange)
-}
+//
+// CATATAN OPERASI PERBANDINGAN DI GO
+//
+// Operator: == (sama), != (tidak sama), < (kurang dari), <= (kurang/sama),
+//           > (lebih dari), >= (lebih/sama). Hasil selalu bool (true/false).
+//
+// Tipe: Bandingkan tipe yang sama. int dengan float64 harus di-cast dulu, misal: float64(stok) > suhu.
+// String: case sensitive; "Gudang" == "gudang" → false.
+//
+// Format cetak: %t (bool), %d (int). \n untuk newline di akhir Printf.
+//
+// Lihat juga: operasi-matematika, operasi-boolean, data-type-boolean, if-statement.
+//
