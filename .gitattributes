@@ -1,2 +1,0 @@
-# Normalisasi line ending: simpan LF di repo, biarkan Git convert ke CRLF di Windows
-* text=auto eol=lf

@@ -1,0 +1,69 @@
+---
+description: Idiomatic Go style guide - penamaan, struct, error, format, concurrency
+globs: "**/*.go"
+alwaysApply: false
+---
+
+# Aturan Penulisan Kode Go (Idiomatic Go Style Guide)
+
+## 1. Penamaan (Naming Conventions)
+
+- **PascalCase** untuk exported: `type User struct { Name string }`
+- **camelCase** untuk unexported: `func newUser() {}`
+- Nama pendek dan bermakna: `user` bukan `usr`, `count` bukan `cnt`
+- Hindari Hungarian notation: gunakan `name`, `count` bukan `strName`, `iCount`
+- Akronim ALL CAPS: `userID`, `HTTPServer`, `URLPath`
+
+## 2. Struktur Kode (Structs, Interfaces, Methods)
+
+- Satu field per baris; boleh satu baris untuk pasangan logis: `X, Y float64`
+- **Pointer receiver** jika: struct besar, butuh mutasi, konsistensi
+- **Value receiver** jika: struct kecil, immutable, tidak butuh pointer
+
+## 3. Paket (Packages)
+
+- Nama package pendek, lower-case: `package user`
+- Jangan ulang nama package di nama fungsi: `user.New()` bukan `user.NewUser()`
+
+## 4. Error Handling
+
+- Error adalah nilai: selalu cek `if err != nil { return err }`
+- Gunakan `errors.New` atau `fmt.Errorf` dengan wrap: `fmt.Errorf("failed: %w", err)`
+- Jangan gunakan panic untuk flow normal; panic hanya untuk kondisi fatal
+
+## 5. Komentar
+
+- GoDoc style: `// User merepresentasikan data pengguna.`
+- Jelaskan *kenapa*, bukan *apa*
+
+## 6. Format Kode
+
+- Selalu `gofmt`. Import grouping: stdlib dulu, lalu baris kosong, lalu third-party.
+
+## 7. Control Flow
+
+- Hindari nested if; gunakan early return
+- Fail fast: cek error lalu return, baru lanjut logika
+
+## 8. Interfaces
+
+- Definisikan interface di sisi konsumen, bukan provider
+- Interface kecil: misalnya `Reader` dengan satu method
+
+## 9. Concurrency
+
+- Goroutine untuk pekerjaan async: `go worker()`
+- Channel untuk komunikasi, bukan shared memory
+- Gunakan `context.Context` untuk cancellation
+
+## 10. Testing
+
+- Pakai `testing` package; nama test jelas: `TestUserCreation` bukan `Test1`
+
+## 11. Lain-lain
+
+- Hindari global state
+- `time.Time` untuk tanggal, bukan string
+- `iota` untuk enum
+- `make` untuk slice/map dengan kapasitas awal
+- Hindari pointer ke interface; hindari `any` kecuali benar-benar perlu
